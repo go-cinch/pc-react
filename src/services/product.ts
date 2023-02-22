@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import { request } from 'utils/request';
 
 export interface IProduct {
   banner: string;
@@ -19,10 +19,10 @@ interface IParams {
 }
 
 export const getProductList = async (params: IParams) => {
-  const result = await request.get<IResult>('api/get-card-list');
+  const result = await request.get<IResult>({ url: 'api/get-card-list' });
 
   // 模拟接口分页
-  let list = result?.data?.list || [];
+  let list = result?.list || [];
   const total = list.length;
   list = list.splice(params.pageSize * (params.current - 1), params.pageSize);
   return {

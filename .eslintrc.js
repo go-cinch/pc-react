@@ -19,7 +19,7 @@ module.exports = {
   },
   rules: {
     'no-shadow': 'off',
-    'no-param-reassign': ['error', { props: false }],
+    'no-param-reassign': 'off',
     'no-console': 'off',
     'no-plusplus': [
       'error',
@@ -35,7 +35,12 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/order': 'off',
     'import/prefer-default-export': 'off',
-    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/no-extraneous-dependencies': 'off',
+    'guard-for-in': 'off',
+    'no-restricted-syntax': 'off',
+    'class-methods-use-this': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     // 关闭variable必须全部大写规则
     '@typescript-eslint/naming-convention': [
       'error',

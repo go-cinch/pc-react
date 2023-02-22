@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import { request } from 'utils/request';
 
 export interface IContract {
   adminName: string;
@@ -22,10 +22,10 @@ interface IParams {
 }
 
 export const getContractList = async (params: IParams) => {
-  const result = await request.get<IResult>('/api/get-list');
+  const result = await request.get<IResult>({ url: '/api/get-list' });
 
   // 模拟接口分页
-  let list = result?.data?.list || [];
+  let list = result?.list || [];
   const total = list.length;
   list = list.splice(params.pageSize * (params.current - 1), params.pageSize);
   return {
