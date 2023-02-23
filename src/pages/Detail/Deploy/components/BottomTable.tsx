@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Card } from 'tdesign-react';
 import { TableSort, TdPrimaryTableProps } from 'tdesign-react/es/table';
-import request from 'utils/request';
+import { request } from 'utils/request';
 import { TABLE_COLUMNS } from '../constant';
 import ManagementPopup from './ManagementPopup';
 import Style from './BottomTable.module.less';
@@ -17,7 +17,7 @@ const BottomTable = () => {
   };
 
   useEffect(() => {
-    request.get('/api/get-project-list').then((res: any) => {
+    request.get({ url: '/api/get-project-list' }).then((res: any) => {
       if (res.code === 0) {
         const { list = [] } = res.data;
         setTableData({ tableData: list });
