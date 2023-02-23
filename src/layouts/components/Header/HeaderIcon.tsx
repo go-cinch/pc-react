@@ -36,7 +36,7 @@ export default memo(() => {
   };
   const handleLogout = async () => {
     await dispatch(logout());
-    navigate('/login/index');
+    navigate('/login');
   };
 
   return (

@@ -1,12 +1,13 @@
 import React, { memo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, MenuValue } from 'tdesign-react';
-import router, { IRouter } from 'router';
+import { IRouter } from 'router';
 import { resolve } from 'utils/path';
 import { useAppSelector } from 'modules/store';
 import { selectGlobal } from 'modules/global';
 import MenuLogo from './MenuLogo';
 import Style from './Menu.module.less';
+import { permissionMenus, userInfo } from '../../modules/user';
 
 const { SubMenu, MenuItem, HeadMenu } = Menu;
 
@@ -75,6 +76,8 @@ export const HeaderMenu = memo(() => {
   const location = useLocation();
   const [active, setActive] = useState<MenuValue>(location.pathname); // todo
 
+  const info = useAppSelector(userInfo);
+  const menus = permissionMenus(info.permission.menus);
   return (
     <HeadMenu
       expandType='popup'
@@ -83,7 +86,7 @@ export const HeaderMenu = memo(() => {
       theme={globalState.theme}
       onChange={(v) => setActive(v)}
     >
-      {renderMenuItems(router)}
+      {renderMenuItems(menus)}
     </HeadMenu>
   );
 });
@@ -98,6 +101,8 @@ export default memo((props: IMenuProps) => {
   const { version } = globalState;
   const bottomText = globalState.collapsed ? version : `TDesign Starter ${version}`;
 
+  const info = useAppSelector(userInfo);
+  const menus = permissionMenus(info.permission.menus);
   return (
     <Menu
       width='232px'
@@ -109,7 +114,7 @@ export default memo((props: IMenuProps) => {
       operations={props.showOperation ? <div className={Style.menuTip}>{bottomText}</div> : undefined}
       logo={props.showLogo ? <MenuLogo collapsed={globalState.collapsed} /> : undefined}
     >
-      {renderMenuItems(router)}
+      {renderMenuItems(menus)}
     </Menu>
   );
 });

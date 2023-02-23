@@ -30,7 +30,7 @@ export default function Login() {
 
         MessagePlugin.success('登录成功');
 
-        navigate('/dashboard/base');
+        navigate('/');
       } catch (e) {
         console.log(e);
         MessagePlugin.error('登录失败');
@@ -38,10 +38,10 @@ export default function Login() {
     }
   };
 
-  const switchType = (val: ELoginType) => {
-    formRef.current?.reset?.();
-    changeLoginType(val);
-  };
+  // const switchType = (val: ELoginType) => {
+  //   formRef.current?.reset?.();
+  //   changeLoginType(val);
+  // };
 
   return (
     <div>
@@ -53,15 +53,23 @@ export default function Login() {
       >
         {loginType === 'password' && (
           <>
-            <FormItem name='account' rules={[{ required: true, message: '账号必填', type: 'error' }]}>
-              <Input size='large' placeholder='请输入账号：admin' prefixIcon={<UserIcon />}></Input>
+            <FormItem
+              name='username'
+              initialData='super'
+              rules={[{ required: true, message: '账号必填', type: 'error' }]}
+            >
+              <Input size='large' placeholder='请输入用户名' prefixIcon={<UserIcon />} />
             </FormItem>
-            <FormItem name='password' rules={[{ required: true, message: '密码必填', type: 'error' }]}>
+            <FormItem
+              name='password'
+              initialData='cinch123'
+              rules={[{ required: true, message: '密码必填', type: 'error' }]}
+            >
               <Input
                 size='large'
                 type={showPsw ? 'text' : 'password'}
                 clearable
-                placeholder='请输入登录密码：admin'
+                placeholder='请输入密码'
                 prefixIcon={<LockOnIcon />}
                 suffixIcon={
                   showPsw ? (
@@ -117,23 +125,23 @@ export default function Login() {
             </Button>
           </FormItem>
         )}
-        <div className={Style.switchContainer}>
-          {loginType !== 'password' && (
-            <span className='tip' onClick={() => switchType('password')}>
-              使用账号密码登录
-            </span>
-          )}
-          {loginType !== 'qrcode' && (
-            <span className='tip' onClick={() => switchType('qrcode')}>
-              使用微信扫码登录
-            </span>
-          )}
-          {loginType !== 'phone' && (
-            <span className='tip' onClick={() => switchType('phone')}>
-              使用手机号登录
-            </span>
-          )}
-        </div>
+        {/* <div className={Style.switchContainer}> */}
+        {/*   {loginType !== 'password' && ( */}
+        {/*     <span className='tip' onClick={() => switchType('password')}> */}
+        {/*       使用账号密码登录 */}
+        {/*     </span> */}
+        {/*   )} */}
+        {/*   {loginType !== 'qrcode' && ( */}
+        {/*     <span className='tip' onClick={() => switchType('qrcode')}> */}
+        {/*       使用微信扫码登录 */}
+        {/*     </span> */}
+        {/*   )} */}
+        {/*   {loginType !== 'phone' && ( */}
+        {/*     <span className='tip' onClick={() => switchType('phone')}> */}
+        {/*       使用手机号登录 */}
+        {/*     </span> */}
+        {/*   )} */}
+        {/* </div> */}
       </Form>
     </div>
   );
