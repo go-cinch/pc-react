@@ -20,6 +20,7 @@ const InitUserInfo = {
 const initialState = {
   token: localStorage.getItem(TOKEN_NAME) || 'main_token', // 默认token不走权限
   userInfo: { ...InitUserInfo },
+  error: false,
 };
 
 // login
@@ -105,16 +106,24 @@ const userSlice = createSlice({
 
         state.token = action.payload;
       })
+      .addCase(getUserInfo.pending, (state) => {
+        state.error = false;
+      })
       .addCase(getUserInfo.fulfilled, (state, action) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         state.userInfo = { ...action.payload };
+      })
+      .addCase(getUserInfo.rejected, (state) => {
+        state.error = true;
+        localStorage.removeItem(TOKEN_NAME);
       });
   },
 });
 
 export const selectListBase = (state: RootState) => state.listBase;
 export const userInfo = (state: RootState) => state.user.userInfo;
+export const userInfoError = (state: RootState) => state.user.error;
 
 export const { logout, remove } = userSlice.actions;
 
