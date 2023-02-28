@@ -124,11 +124,25 @@ const transform: AxiosTransform = {
   // 响应错误处理
   responseInterceptorsCatch: (error: any) => {
     const { config } = error;
-    if (!config || !config.requestOptions.retry) return Promise.reject(error);
+    const e: any = {
+      code: error.code,
+      message: error.message,
+      reason: '',
+    };
+    if (error.response?.data?.code) {
+      e.code = error.response?.data?.code;
+    }
+    if (error.response?.data?.message) {
+      e.message = error.response?.data?.message;
+    }
+    if (error.response?.data?.reason) {
+      e.reason = error.response?.data?.reason;
+    }
+    if (!config || !config.requestOptions.retry) return Promise.reject(e);
 
     config.retryCount = config.retryCount || 0;
 
-    if (config.retryCount >= config.requestOptions.retry.count) return Promise.reject(error);
+    if (config.retryCount >= config.requestOptions.retry.count) return Promise.reject(e);
 
     config.retryCount += 1;
 

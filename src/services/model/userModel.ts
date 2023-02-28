@@ -1,3 +1,5 @@
+import { Page } from './pageModel';
+
 export interface UserLoginReply {
   token: string;
   expires: string;
@@ -38,11 +40,13 @@ export interface User {
   code: string;
   status: string;
   locked: string;
-  lastLogin: string;
   lockMsg: string;
+  platform: string;
+  lastLogin: string;
   roleId: string;
 }
 
 export interface FindUserReply {
+  page: Page;
   list: Array<User>;
 }

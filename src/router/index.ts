@@ -5,6 +5,7 @@ import list from './modules/list';
 import form from './modules/form';
 import detail from './modules/detail';
 import result from './modules/result';
+import system from './modules/system';
 import user from './modules/user';
 import login from './modules/login';
 import otherRoutes from './modules/others';
@@ -50,6 +51,17 @@ const routes: IRouter[] = [
   },
 ];
 
-const allRoutes = [...routes, ...dashboard, ...list, ...form, ...detail, ...result, ...user, ...login, ...otherRoutes];
+const allRoutes = [
+  ...routes,
+  ...dashboard,
+  ...list,
+  ...form,
+  ...detail,
+  ...result,
+  ...system,
+  ...user,
+  ...login,
+  ...otherRoutes,
+];
 
 export default allRoutes;
