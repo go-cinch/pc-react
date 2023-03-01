@@ -209,29 +209,38 @@ export const SelectTable = () => {
     editFormRef.current?.setFieldsValue(row);
     await fetchRoleData();
     await fetchActionData();
+    const roles: any[] = [];
     if (row.roleId !== '0') {
-      const item = roleSelectOptions.find((item: any) => item.value === row.roleId);
-      if (!item) {
-        setRoleSelectOptions(
-          roleSelectOptions.concat([
-            {
-              label: `${row.role.word}[${row.role.name}]`,
-              value: row.roleId,
-            },
-          ]),
-        );
-        setRoleSelectChecked([
-          {
-            label: `${row.role.word}[${row.role.name}]`,
-            value: row.roleId,
-          },
-        ]);
-      } else {
-        setRoleSelectChecked([item]);
-      }
-    } else {
-      setRoleSelectChecked([]);
+      roles.push({
+        id: row.role.id,
+        word: row.role.word,
+        name: row.role.name,
+      });
     }
+    const arr1: any[] = [];
+    for (const k in roles) {
+      const role = roles[k];
+      const item = arr1.find((item: any) => item.value === role.id);
+      if (!item) {
+        arr1.push({
+          label: `${role.word}[${role.name}]`,
+          value: role.id,
+        });
+      }
+    }
+    const arr2: any[] = [];
+    for (const k in row.actions) {
+      const action = row.actions[k];
+      const item = arr2.find((item: any) => item.value === action.code);
+      if (!item) {
+        arr2.push({
+          label: `${action.word}[${action.name}]`,
+          value: action.code,
+        });
+      }
+    }
+    setRoleSelectChecked(arr1);
+    setActionSelectChecked(arr2);
     setEditDialogRow(row);
     setEditDialogType(true);
     setEditDialogVisible(true);
