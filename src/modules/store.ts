@@ -2,21 +2,25 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 
 import global from './global';
+import globalIdempotent from './global/idempotent';
 import user from './user';
 import listBase from './list/base';
 import listSelect from './list/select';
 import listCard from './list/card';
 import systemUser from './system/user';
+import systemUserGroup from './system/userGroup';
 import systemRole from './system/role';
 import systemAction from './system/action';
 
 const reducer = combineReducers({
   global,
+  globalIdempotent,
   user,
   listBase,
   listSelect,
   listCard,
   systemUser,
+  systemUserGroup,
   systemRole,
   systemAction,
 });

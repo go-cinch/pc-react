@@ -17,6 +17,20 @@ const system: IRouter[] = [
           title: '用户',
         },
       },
+      {
+        path: 'group',
+        Component: lazy(() => import('pages/System/Group')),
+        meta: {
+          title: '用户组',
+        },
+      },
+      {
+        path: 'role',
+        Component: lazy(() => import('pages/System/Role')),
+        meta: {
+          title: '角色',
+        },
+      },
     ],
   },
 ];

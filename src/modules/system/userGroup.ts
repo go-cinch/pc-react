@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Page } from 'services/model/pageModel';
-import { Role } from 'services/model/roleModel';
-import { findRole } from 'services/role';
 import { PAGE } from '../../constants';
-import { createRole, deleteRole, updateRole } from '../../services/role';
+import { createUserGroup, deleteUserGroup, findUserGroup, updateUserGroup } from 'services/userGroup';
+import { UserGroup } from 'services/model/userGroupModel';
 
-const namespace = 'system/role';
+const namespace = 'system/user/group';
 
 interface IInitialState {
   page: Page;
-  list: Role[];
+  list: UserGroup[];
 }
 
 const initialState: IInitialState = {
@@ -24,26 +23,25 @@ const initialState: IInitialState = {
 };
 
 export const find = createAsyncThunk(`${namespace}/find`, async (params: any) => {
-  const res = await findRole(params);
+  const res = await findUserGroup(params);
   return res;
 });
 
 export const update = createAsyncThunk(`${namespace}/update`, async (data: any) => {
-  const res = await updateRole(data);
+  const res = await updateUserGroup(data);
   return res;
 });
 
 export const create = createAsyncThunk(`${namespace}/create`, async (params: { token: string; data: any }) => {
-  const res = await createRole(params.token, params.data);
+  const res = await createUserGroup(params.token, params.data);
   return res;
 });
 
 export const deleteByIds = createAsyncThunk(`${namespace}/deleteByIds`, async (data: any) => {
-  const res = await deleteRole(data);
+  const res = await deleteUserGroup(data);
   return res;
 });
-
-const systemRoleSlice = createSlice({
+const systemUserGroupSlice = createSlice({
   name: namespace,
   initialState,
   reducers: {
@@ -57,8 +55,8 @@ const systemRoleSlice = createSlice({
   },
 });
 
-export const { reset } = systemRoleSlice.actions;
+export const { reset } = systemUserGroupSlice.actions;
 
-export const selectSystemRole = (state: RootState) => state.systemRole;
+export const selectSystemUserGroup = (state: RootState) => state.systemUserGroup;
 
-export default systemRoleSlice.reducer;
+export default systemUserGroupSlice.reducer;
