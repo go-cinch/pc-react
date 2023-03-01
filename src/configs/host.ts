@@ -9,14 +9,14 @@ export default {
   },
   test: {
     // 测试环境接口地址
-    API: 'http://127.0.0.1:6061',
+    API: '',
   },
   release: {
     // 正式环境接口地址
-    API: 'http://127.0.0.1:6061',
+    API: '',
   },
   site: {
     // TDesign部署特殊需要 与release功能一致
-    API: 'http://127.0.0.1:6061',
+    API: '',
   },
 };
