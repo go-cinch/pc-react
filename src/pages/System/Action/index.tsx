@@ -1,14 +1,12 @@
 import React, { useState, memo, useEffect, useRef } from 'react';
-import { Table, Dialog, Row, Link, Form, Input, Button, SelectInput, Checkbox, MessagePlugin } from 'tdesign-react';
+import { Table, Dialog, Row, Link, Form, Input, Button, Textarea, MessagePlugin } from 'tdesign-react';
 import { FormInstanceFunctions } from 'tdesign-react/es/form/type';
 import { useAppDispatch, useAppSelector } from 'modules/store';
 import SearchForm from './components/SearchForm';
 
 import classnames from 'classnames';
 import CommonStyle from '../../../styles/common.module.less';
-import { create, deleteByIds, find, reset, selectSystemRole, update } from 'modules/system/role';
-import { find as findAction } from 'modules/system/action';
-import { PAGE } from '../../../constants';
+import { create, deleteByIds, find, reset, selectSystemAction, update } from 'modules/system/action';
 import { idempotent } from '../../../modules/global/idempotent';
 
 const { FormItem } = Form;
@@ -21,13 +19,12 @@ interface IProps {
 
 export const SelectTable = () => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector(selectSystemRole);
+  const state = useAppSelector(selectSystemAction);
   const { page, list } = state;
   const [selectedRowKeys, setSelectedRowKeys] = useState<(string | number)[]>([]);
 
   const [idempotentToken, setIdempotentToken] = useState('');
   const [loading, setLoading] = useState(false);
-  const [actionLoading, setActionLoading] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [batchDeleteLoading, setBatchDeleteLoading] = useState(false);
 
@@ -37,8 +34,6 @@ export const SelectTable = () => {
   const [editDialogType, setEditDialogType] = useState(false);
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [editDialogRow, setEditDialogRow] = useState<any>({});
-  const [actionSelectChecked, setActionSelectChecked] = useState<any[]>([]);
-  const [actionSelectOptions, setActionSelectOptions] = useState<any[]>([]);
 
   const editFormRef = useRef<FormInstanceFunctions>();
 
@@ -65,34 +60,6 @@ export const SelectTable = () => {
       MessagePlugin.error(e.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchActionData = async (params?: any) => {
-    const p = {
-      'page.num': PAGE.NUM,
-      'page.size': PAGE.SIZE,
-      ...params,
-    };
-    try {
-      setActionLoading(true);
-      const res: any = await dispatch(findAction(p));
-      if (res.error?.message) {
-        throw new Error(res.error?.message);
-      }
-      const { list } = res.payload;
-      const arr = [];
-      for (const k in list) {
-        arr.push({
-          label: `${list[k].word}[${list[k].name}]`,
-          value: list[k].code,
-        });
-      }
-      setActionSelectOptions(arr);
-    } catch (e: any) {
-      MessagePlugin.error(e.message);
-    } finally {
-      setActionLoading(false);
     }
   };
 
@@ -147,20 +114,6 @@ export const SelectTable = () => {
   async function handleRowEdit(row: any) {
     editFormRef.current?.reset();
     editFormRef.current?.setFieldsValue(row);
-    setActionSelectChecked([]);
-    await fetchActionData();
-    const arr2: any[] = [];
-    for (const k in row.actions) {
-      const action = row.actions[k];
-      const item = arr2.find((item: any) => item.value === action.code);
-      if (!item) {
-        arr2.push({
-          label: `${action.word}[${action.name}]`,
-          value: action.code,
-        });
-      }
-    }
-    setActionSelectChecked(arr2);
     setEditDialogRow(row);
     setEditDialogType(true);
     setEditDialogVisible(true);
@@ -204,11 +157,6 @@ export const SelectTable = () => {
           }
         }
         params.id = editDialogRow.id;
-        params.action = '';
-        if (actionCheckboxChecked.length > 0) {
-          params.action = actionCheckboxChecked.join(',');
-        }
-
         try {
           setEditLoading(true);
           const res: any = await dispatch(update(params));
@@ -247,51 +195,6 @@ export const SelectTable = () => {
       }
     }
   }
-
-  const actionTagChange = async (currentTags: any, context: any) => {
-    const { trigger, index } = context;
-    if (trigger === 'clear') {
-      setActionSelectChecked([]);
-      await fetchActionData();
-    }
-    if (['tag-remove', 'backspace'].includes(trigger)) {
-      const newValue = [...actionSelectChecked];
-      newValue.splice(index, 1);
-      setActionSelectChecked(newValue);
-    }
-  };
-
-  async function actionSelectChange(keyword: any) {
-    if (keyword === '') {
-      return;
-    }
-    await fetchActionData({
-      word: keyword,
-    });
-  }
-
-  const actionSelectCheckedChange = (val: any, { current, type }: any) => {
-    if (type === 'check') {
-      const option = actionSelectOptions.find((t) => t.value === current);
-      setActionSelectChecked(actionSelectChecked.concat(option));
-    } else {
-      const newValue = actionSelectChecked.filter((v) => v.value !== current);
-      setActionSelectChecked(newValue);
-    }
-  };
-
-  const getActionCheckboxChecked = () => {
-    const arr = [];
-    const list = actionSelectChecked;
-    for (let i = 0, len = list.length; i < len; i++) {
-      if (list[i].value) {
-        arr.push(list[i].value);
-      }
-    }
-    return arr;
-  };
-
-  const actionCheckboxChecked = getActionCheckboxChecked();
 
   function handleEditDialogClose() {
     setEditDialogVisible(false);
@@ -371,6 +274,11 @@ export const SelectTable = () => {
             colKey: 'id',
           },
           {
+            title: '唯一码',
+            colKey: 'code',
+            width: 150,
+          },
+          {
             title: '名称',
             colKey: 'name',
             width: 150,
@@ -379,6 +287,11 @@ export const SelectTable = () => {
             title: '关键字',
             width: 150,
             colKey: 'word',
+          },
+          {
+            title: '授权资源',
+            width: 150,
+            colKey: 'resource',
           },
           {
             align: 'left',
@@ -436,36 +349,15 @@ export const SelectTable = () => {
           <FormItem label='关键字' name='word' initialData={editDialogRow.word}>
             <Input placeholder='请输入关键字' clearable />
           </FormItem>
-          {editDialogType ? (
-            <FormItem label='授权行为' name='action'>
-              <div style={{ width: '100%', height: '100%' }}>
-                <SelectInput
-                  value={actionSelectChecked}
-                  placeholder='请选择(输入关键词可搜索)'
-                  tagInputProps={{ excessTagsDisplayType: 'break-line' }}
-                  allowInput
-                  multiple
-                  clearable
-                  loading={actionLoading}
-                  onTagChange={actionTagChange}
-                  onInputChange={actionSelectChange}
-                  panel={
-                    actionSelectOptions.length ? (
-                      <Checkbox.Group
-                        value={actionCheckboxChecked}
-                        options={actionSelectOptions}
-                        onChange={actionSelectCheckedChange}
-                      />
-                    ) : (
-                      <div className={classnames(CommonStyle.selectInputNoData)}>请切换关键词</div>
-                    )
-                  }
-                />
-              </div>
-            </FormItem>
-          ) : (
-            <></>
-          )}
+          <FormItem label='授权资源' name='resource' initialData={editDialogRow.resource}>
+            <Textarea placeholder='请输入内容(1行表示一个资源)' autosize={{ minRows: 5 }} />
+          </FormItem>
+          <FormItem label='授权菜单' name='menu' initialData={editDialogRow.menu}>
+            <Textarea placeholder='请输入内容(1行表示一个菜单)' autosize={{ minRows: 5 }} />
+          </FormItem>
+          <FormItem label='授权按钮' name='btn' initialData={editDialogRow.btn}>
+            <Textarea placeholder='请输入内容(1行表示一个按钮)' autosize={{ minRows: 5 }} />
+          </FormItem>
         </Form>
       </Dialog>
       <Dialog

@@ -31,6 +31,13 @@ const system: IRouter[] = [
           title: '角色',
         },
       },
+      {
+        path: 'action',
+        Component: lazy(() => import('pages/System/Action')),
+        meta: {
+          title: '行为',
+        },
+      },
     ],
   },
 ];

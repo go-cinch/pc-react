@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Page } from 'services/model/pageModel';
 import { Action } from 'services/model/actionModel';
-import { findAction } from 'services/action';
+import { createAction, deleteAction, findAction, updateAction } from 'services/action';
 import { PAGE } from '../../constants';
 
 const namespace = 'system/action';
@@ -24,6 +24,21 @@ const initialState: IInitialState = {
 
 export const find = createAsyncThunk(`${namespace}/find`, async (params: any) => {
   const res = await findAction(params);
+  return res;
+});
+
+export const update = createAsyncThunk(`${namespace}/update`, async (data: any) => {
+  const res = await updateAction(data);
+  return res;
+});
+
+export const create = createAsyncThunk(`${namespace}/create`, async (params: { token: string; data: any }) => {
+  const res = await createAction(params.token, params.data);
+  return res;
+});
+
+export const deleteByIds = createAsyncThunk(`${namespace}/deleteByIds`, async (data: any) => {
+  const res = await deleteAction(data);
   return res;
 });
 
