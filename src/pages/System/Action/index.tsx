@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import CommonStyle from '../../../styles/common.module.less';
 import { create, deleteByIds, find, reset, selectSystemAction, update } from 'modules/system/action';
 import { idempotent } from '../../../modules/global/idempotent';
+import Permission from 'components/Permission';
 
 const { FormItem } = Form;
 
@@ -203,8 +204,12 @@ export const SelectTable = () => {
   function OpBtn(props: IProps) {
     return (
       <>
-        <EditBtn {...props} />
-        <DeleteBtn {...props} />
+        <Permission btn='system.action.update'>
+          <EditBtn {...props} />
+        </Permission>
+        <Permission btn='system.action.delete'>
+          <DeleteBtn {...props} />
+        </Permission>
       </>
     );
   }

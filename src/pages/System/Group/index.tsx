@@ -11,6 +11,7 @@ import { find as findUser } from 'modules/system/user';
 import { find as findAction } from 'modules/system/action';
 import { PAGE } from '../../../constants';
 import { idempotent } from '../../../modules/global/idempotent';
+import Permission from 'components/Permission';
 
 const { FormItem } = Form;
 
@@ -395,8 +396,12 @@ export const SelectTable = () => {
   function OpBtn(props: IProps) {
     return (
       <>
-        <EditBtn {...props} />
-        <DeleteBtn {...props} />
+        <Permission btn='system.user.group.update'>
+          <EditBtn {...props} />
+        </Permission>
+        <Permission btn='system.user.group.delete'>
+          <DeleteBtn {...props} />
+        </Permission>
       </>
     );
   }

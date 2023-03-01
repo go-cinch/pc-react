@@ -3,6 +3,7 @@ import { Row, Col, Form, Input, Button, Select } from 'tdesign-react';
 import { AddIcon, DeleteIcon } from 'tdesign-icons-react';
 import { FormInstanceFunctions, SubmitContext } from 'tdesign-react/es/form/type';
 import { LOCKED_OPTIONS } from '../../../../constants';
+import Permission from 'components/Permission';
 
 const { FormItem } = Form;
 
@@ -80,24 +81,32 @@ const SearchForm: React.FC<SearchFormProps> = (props) => {
             </Row>
           </Col>
           <Col>
-            <Button theme='primary' type='submit' style={{ marginLeft: '10px' }}>
-              查询
-            </Button>
-            <Button type='reset' variant='base' theme='default' style={{ marginLeft: '8px' }}>
-              重置
-            </Button>
-            <Button theme='primary' onClick={onCreate} icon={<AddIcon />} style={{ marginLeft: '8px' }}>
-              新建
-            </Button>
-            <Button
-              theme='danger'
-              loading={props.deleteLoading}
-              onClick={onDelete}
-              icon={<DeleteIcon />}
-              style={{ marginLeft: '8px' }}
-            >
-              删除
-            </Button>
+            <Permission btn='system.user.read'>
+              <Button theme='primary' type='submit' style={{ marginLeft: '10px' }}>
+                查询
+              </Button>
+            </Permission>
+            <Permission btn='system.user.read'>
+              <Button type='reset' variant='base' theme='default' style={{ marginLeft: '8px' }}>
+                重置
+              </Button>
+            </Permission>
+            <Permission btn='system.user.create'>
+              <Button theme='primary' onClick={onCreate} icon={<AddIcon />} style={{ marginLeft: '8px' }}>
+                新建
+              </Button>
+            </Permission>
+            <Permission btn='system.user.delete'>
+              <Button
+                theme='danger'
+                loading={props.deleteLoading}
+                onClick={onDelete}
+                icon={<DeleteIcon />}
+                style={{ marginLeft: '8px' }}
+              >
+                删除
+              </Button>
+            </Permission>
           </Col>
         </Row>
       </Form>

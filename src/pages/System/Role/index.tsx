@@ -10,6 +10,7 @@ import { create, deleteByIds, find, reset, selectSystemRole, update } from 'modu
 import { find as findAction } from 'modules/system/action';
 import { PAGE } from '../../../constants';
 import { idempotent } from '../../../modules/global/idempotent';
+import Permission from 'components/Permission';
 
 const { FormItem } = Form;
 
@@ -300,8 +301,12 @@ export const SelectTable = () => {
   function OpBtn(props: IProps) {
     return (
       <>
-        <EditBtn {...props} />
-        <DeleteBtn {...props} />
+        <Permission btn='system.role.update'>
+          <EditBtn {...props} />
+        </Permission>
+        <Permission btn='system.role.delete'>
+          <DeleteBtn {...props} />
+        </Permission>
       </>
     );
   }

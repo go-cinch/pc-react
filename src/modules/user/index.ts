@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { login as remoteLogin, userInfo as remoteUserInfo } from 'services/user';
-import allRoutes, { IRouter } from '../../router';
+import allRoutes, { IRouter } from 'router';
+import { UserInfoReply } from 'services/model/userModel';
 
 const namespace = 'user';
 export const TOKEN_NAME = 'tdesign-starter';
 
-const InitUserInfo = {
+const InitUserInfo: UserInfoReply = {
   id: '',
   username: '',
   code: '',

@@ -27,6 +27,7 @@ import { create, deleteByIds, find, refreshCaptcha, reset, selectSystemUser, upd
 import { find as findRole } from 'modules/system/role';
 import { find as findAction } from 'modules/system/action';
 import { BOOL, PAGE } from '../../../constants';
+import Permission from 'components/Permission';
 
 const { FormItem } = Form;
 
@@ -367,7 +368,7 @@ export const SelectTable = () => {
         if (roleCheckboxChecked.length === 1) {
           const [one] = roleCheckboxChecked;
           params.roleId = one;
-        } else {
+        } else if (editDialogRow.roleId === '0') {
           delete params.roleId;
         }
         params.action = '';
@@ -520,10 +521,14 @@ export const SelectTable = () => {
     }
     return (
       <>
-        <EditBtn {...props} />
-        <LockBtn {...props} lock={lock} />
-        <UnlockBtn {...props} unlock={unlock} />
-        <DeleteBtn {...props} />
+        <Permission btn='system.user.update'>
+          <EditBtn {...props} />
+          <LockBtn {...props} lock={lock} />
+          <UnlockBtn {...props} unlock={unlock} />
+        </Permission>
+        <Permission btn='system.user.delete'>
+          <DeleteBtn {...props} />
+        </Permission>
       </>
     );
   }
