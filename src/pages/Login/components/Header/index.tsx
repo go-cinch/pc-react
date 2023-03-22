@@ -11,11 +11,11 @@ export default function Header() {
   const dispatch = useAppDispatch();
 
   const navToGitHub = () => {
-    window.open('https://github.com/tencent/tdesign-react-starter');
+    window.open('https://github.com/go-cinch/pc-react');
   };
 
   const navToHelper = () => {
-    window.open('http://tdesign.tencent.com/starter/docs/react/get-started');
+    window.open('https://go-cinch.github.io/docs/#/started/0.init');
   };
 
   const toggleSettingPanel = () => {
