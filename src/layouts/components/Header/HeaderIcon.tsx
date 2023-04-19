@@ -22,11 +22,11 @@ export default memo(() => {
   const navigate = useNavigate();
 
   const gotoWiki = () => {
-    window.open('https://tdesign.tencent.com/react/overview');
+    window.open('https://go-cinch.github.io/docs');
   };
 
   const gotoGitHub = () => {
-    window.open('https://github.com/Tencent/tdesign-react-starter');
+    window.open('https://github.com/go-cinch/pc-react');
   };
 
   const clickHandler = (data: any) => {
