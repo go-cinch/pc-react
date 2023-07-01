@@ -260,7 +260,7 @@ export const SelectTable = () => {
   async function handleRowLockConfirm() {
     const params = {
       id: lockDialogRow.id,
-      locked: 1,
+      locked: true,
       lockExpireTime: '',
     };
     if (!lockDialogForever) {
@@ -300,7 +300,7 @@ export const SelectTable = () => {
   async function handleRowUnlockConfirm() {
     const params = {
       id: unlockDialogRow.id,
-      locked: 0,
+      locked: false,
     };
     try {
       setEditLoading(true);
@@ -511,7 +511,7 @@ export const SelectTable = () => {
     let lock = false;
     let unlock = false;
     if (props.edit) {
-      if (props.row.locked === BOOL.FALSE) {
+      if (!props.row.locked) {
         lock = true;
         unlock = false;
       } else {
@@ -677,7 +677,7 @@ export const SelectTable = () => {
             ellipsis: true,
             colKey: 'locked',
             cell(record) {
-              if (record.row.locked === BOOL.FALSE) {
+              if (!record.row.locked) {
                 return (
                   <Tag theme='success' variant='light'>
                     正常

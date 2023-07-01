@@ -11,6 +11,7 @@ import systemUser from './system/user';
 import systemUserGroup from './system/userGroup';
 import systemRole from './system/role';
 import systemAction from './system/action';
+import systemWhitelist from './system/whitelist';
 
 const reducer = combineReducers({
   global,
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   systemUserGroup,
   systemRole,
   systemAction,
+  systemWhitelist,
 });
 
 export const store = configureStore({

@@ -38,6 +38,13 @@ const system: IRouter[] = [
           title: '行为',
         },
       },
+      {
+        path: 'whitelist',
+        Component: lazy(() => import('pages/System/Whitelist')),
+        meta: {
+          title: '白名单',
+        },
+      },
     ],
   },
 ];

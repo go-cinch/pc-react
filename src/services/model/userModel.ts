@@ -17,7 +17,7 @@ export interface UserStatusReply {
     id: string;
     img: string;
   };
-  locked: string;
+  locked: bool;
   lockExpire: string;
 }
 
@@ -39,7 +39,7 @@ export interface User {
   username: string;
   code: string;
   status: string;
-  locked: string;
+  locked: bool;
   lockMsg: string;
   platform: string;
   lastLogin: string;

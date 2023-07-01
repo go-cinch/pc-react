@@ -1,11 +1,6 @@
-export const BOOL = {
-  TRUE: '1',
-  FALSE: '0',
-};
-
 export const LOCKED_OPTIONS = [
-  { value: BOOL.FALSE, label: '正常' },
-  { value: BOOL.TRUE, label: '已锁定' },
+  { value: false, label: '正常' },
+  { value: true, label: '已锁定' },
 ];
 
 // 通用请求头
@@ -19,3 +14,9 @@ export const PAGE = {
   NUM: '1',
   SIZE: '20',
 };
+
+export const WHITELIST_OPTIONS = [
+  { value: 0, label: 'permission' },
+  { value: 1, label: 'jwt' },
+  { value: 2, label: 'idempotent' },
+];
