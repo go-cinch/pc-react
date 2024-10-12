@@ -54,11 +54,11 @@ const routes: IRouter[] = [
 const allRoutes = [
   ...routes,
   ...dashboard,
+  ...system,
   ...list,
   ...form,
   ...detail,
   ...result,
-  ...system,
   ...user,
   ...login,
   ...otherRoutes,

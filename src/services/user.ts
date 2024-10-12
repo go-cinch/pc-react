@@ -8,11 +8,11 @@ import {
 } from 'services/model/userModel';
 
 const Api = {
-  UserLogin: '/auth/login',
-  UserCaptcha: '/auth/captcha',
-  UserStatus: '/auth/status',
+  UserLogin: '/auth/pub/login',
+  UserCaptcha: '/auth/pub/captcha',
+  UserStatus: '/auth/pub/status',
   UserInfo: '/auth/info',
-  Register: '/auth/register',
+  Register: '/auth/pub/register',
   FindUser: '/auth/user',
   UpdateUser: '/auth/user',
   DeleteUser: '/auth/user',
