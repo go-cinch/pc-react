@@ -2,10 +2,10 @@ import { request } from '../utils/request';
 import { FindWhitelistReply } from './model/whitelistModel';
 
 const Api = {
-  CreateWhitelist: '/auth/whitelist',
-  FindWhitelist: '/auth/whitelist',
-  UpdateWhitelist: '/auth/whitelist',
-  DeleteWhitelist: '/auth/whitelist',
+  CreateWhitelist: '/auth/whitelist/create',
+  FindWhitelist: '/auth/whitelist/list',
+  UpdateWhitelist: '/auth/whitelist/update',
+  DeleteWhitelist: '/auth/whitelist/delete',
 };
 
 export function createWhitelist(token: string, data: any) {
@@ -27,13 +27,13 @@ export function findWhitelist(params: any) {
 
 export function updateWhitelist(data: any) {
   return request.patch({
-    url: `${Api.UpdateWhitelist}/${data.id}`,
+    url: Api.UpdateWhitelist,
     data,
   });
 }
 
 export function deleteWhitelist(ids: any[]) {
   return request.delete({
-    url: `${Api.DeleteWhitelist}/${ids.join(',')}`,
+    url: `${Api.DeleteWhitelist}?ids=${ids.join(',')}`,
   });
 }

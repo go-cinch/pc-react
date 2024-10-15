@@ -2,10 +2,10 @@ import { request } from '../utils/request';
 import { FindRoleReply } from './model/roleModel';
 
 const Api = {
-  CreateRole: '/auth/role',
-  FindRole: '/auth/role',
-  UpdateRole: '/auth/role',
-  DeleteRole: '/auth/role',
+  CreateRole: '/auth/role/create',
+  FindRole: '/auth/role/list',
+  UpdateRole: '/auth/role/update',
+  DeleteRole: '/auth/role/delete',
 };
 
 export function createRole(token: string, data: any) {
@@ -27,13 +27,13 @@ export function findRole(params: any) {
 
 export function updateRole(data: any) {
   return request.patch({
-    url: `${Api.UpdateRole}/${data.id}`,
+    url: Api.UpdateRole,
     data,
   });
 }
 
 export function deleteRole(ids: any[]) {
   return request.delete({
-    url: `${Api.DeleteRole}/${ids.join(',')}`,
+    url: `${Api.DeleteRole}?ids=${ids.join(',')}`,
   });
 }

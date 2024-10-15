@@ -13,9 +13,9 @@ const Api = {
   UserStatus: '/auth/pub/status',
   UserInfo: '/auth/info',
   Register: '/auth/pub/register',
-  FindUser: '/auth/user',
-  UpdateUser: '/auth/user',
-  DeleteUser: '/auth/user',
+  FindUser: '/auth/user/list',
+  UpdateUser: '/auth/user/update',
+  DeleteUser: '/auth/user/delete',
 };
 
 export function login(data: any) {
@@ -60,13 +60,13 @@ export function findUser(params: any) {
 
 export function updateUser(data: any) {
   return request.patch({
-    url: `${Api.UpdateUser}/${data.id}`,
+    url: Api.UpdateUser,
     data,
   });
 }
 
 export function deleteUser(ids: []) {
   return request.delete({
-    url: `${Api.DeleteUser}/${ids.join(',')}`,
+    url: `${Api.DeleteUser}?ids=${ids.join(',')}`,
   });
 }
