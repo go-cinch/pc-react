@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { login as remoteLogin, userInfo as remoteUserInfo } from 'services/user';
+import { login as remoteLogin, userInfo as remoteUserInfo, userStatus as remoteStatus } from 'services/user';
 import allRoutes, { IRouter } from 'router';
 import { UserInfoReply } from 'services/model/userModel';
 
@@ -30,8 +30,14 @@ export const login = createAsyncThunk(`${namespace}/login`, async (userInfo: Rec
   return res.token;
 });
 
-// getUserInfo
-export const getUserInfo = createAsyncThunk(`${namespace}/getUserInfo`, async () => {
+// login
+export const status = createAsyncThunk(`${namespace}/status`, async (data: any) => {
+  const res = await remoteStatus(data);
+  return res;
+});
+
+// info
+export const info = createAsyncThunk(`${namespace}/getInfo`, async () => {
   const res = await remoteUserInfo();
   return res;
 });
@@ -107,15 +113,15 @@ const userSlice = createSlice({
 
         state.token = action.payload;
       })
-      .addCase(getUserInfo.pending, (state) => {
+      .addCase(info.pending, (state) => {
         state.error = false;
       })
-      .addCase(getUserInfo.fulfilled, (state, action) => {
+      .addCase(info.fulfilled, (state, action) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         state.userInfo = { ...action.payload };
       })
-      .addCase(getUserInfo.rejected, (state) => {
+      .addCase(info.rejected, (state) => {
         state.error = true;
         localStorage.removeItem(TOKEN_NAME);
       });

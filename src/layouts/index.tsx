@@ -7,7 +7,7 @@ import { selectGlobal, toggleSetting, toggleMenu, ELayout, switchTheme } from 'm
 import Setting from './components/Setting';
 import AppLayout from './components/AppLayout';
 import Style from './index.module.less';
-import { getUserInfo, permissionMenuPaths, TOKEN_NAME, userInfo, userInfoError } from '../modules/user';
+import { info as getUserInfo, permissionMenuPaths, TOKEN_NAME, userInfo, userInfoError } from '../modules/user';
 
 export default memo(() => {
   const globalState = useAppSelector(selectGlobal);

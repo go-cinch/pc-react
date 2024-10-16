@@ -1,14 +1,23 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, MessagePlugin, Input, Checkbox, Button, FormInstanceFunctions, SubmitContext } from 'tdesign-react';
-import { LockOnIcon, UserIcon, BrowseOffIcon, BrowseIcon, RefreshIcon } from 'tdesign-icons-react';
+import { Form, MessagePlugin, Input, Image, Button, FormInstanceFunctions, SubmitContext } from 'tdesign-react';
+import {
+  LockOnIcon,
+  UserIcon,
+  BrowseOffIcon,
+  BrowseIcon,
+  RefreshIcon,
+  SecuredIcon,
+  ImageErrorIcon,
+} from 'tdesign-icons-react';
 import classnames from 'classnames';
 import QRCode from 'qrcode.react';
 import { useAppDispatch } from 'modules/store';
-import { login } from 'modules/user';
+import { login, status } from 'modules/user';
 import useCountdown from '../../hooks/useCountDown';
 
 import Style from './index.module.less';
+import { refreshCaptcha } from '../../../../modules/system/user';
 
 const { FormItem } = Form;
 
@@ -17,6 +26,11 @@ export type ELoginType = 'password' | 'phone' | 'qrcode';
 export default function Login() {
   const [loginType, changeLoginType] = useState<ELoginType>('password');
   const [showPsw, toggleShowPsw] = useState(false);
+  const [disableLogin, toggleDisableLogin] = useState(false);
+  const [showCaptcha, toggleShowCaptcha] = useState(false);
+  const [captchaId, setCaptchaId] = useState('');
+  const [captchaImg, setCaptchaImg] = useState('');
+  const [refreshCaptchaCount, setRefreshCaptchaCount] = useState(0);
   const { countdown, setupCountdown } = useCountdown(60);
   const formRef = useRef<FormInstanceFunctions>();
   const navigate = useNavigate();
@@ -26,7 +40,12 @@ export default function Login() {
     if (e.validateResult === true) {
       try {
         const formValue = formRef.current?.getFieldsValue?.(true) || {};
-        const res: any = await dispatch(login(formValue));
+        const res: any = await dispatch(
+          login({
+            ...formValue,
+            captchaId,
+          }),
+        );
         if (res.error?.message) {
           throw new Error(res.error?.message);
         }
@@ -36,9 +55,53 @@ export default function Login() {
         navigate('/');
       } catch (e: any) {
         MessagePlugin.error(e.message);
+        await getUserStatus();
+      } finally {
       }
     }
   };
+
+  const getUserStatus = async () => {
+    try {
+      const formValue = formRef.current?.getFieldsValue?.(true) || {};
+      const res: any = await dispatch(status({ username: formValue.username }));
+      if (res.error?.message) {
+        return;
+      }
+      const data = res.payload;
+      if (data.captcha) {
+        if (data.captcha.id !== '') {
+          toggleShowCaptcha(true);
+        } else {
+          toggleShowCaptcha(false);
+        }
+        setCaptchaId(data.captcha.id);
+        setCaptchaImg(data.captcha.img);
+      } else {
+        toggleShowCaptcha(false);
+      }
+      if (data.locked) {
+        toggleDisableLogin(true);
+      } else {
+        toggleDisableLogin(false);
+      }
+    } finally {
+    }
+  };
+
+  async function doRefreshCaptcha() {
+    try {
+      const res: any = await dispatch(refreshCaptcha());
+      if (res.error?.message) {
+        throw new Error(res.error?.message);
+      }
+      setCaptchaId(res.payload?.captcha?.id);
+      setCaptchaImg(res.payload?.captcha?.img);
+      setRefreshCaptchaCount(refreshCaptchaCount + 1);
+    } catch (e: any) {
+      MessagePlugin.error(e.message);
+    }
+  }
 
   // const switchType = (val: ELoginType) => {
   //   formRef.current?.reset?.();
@@ -60,7 +123,7 @@ export default function Login() {
               initialData='super'
               rules={[{ required: true, message: '账号必填', type: 'error' }]}
             >
-              <Input size='large' placeholder='请输入用户名' prefixIcon={<UserIcon />} />
+              <Input size='large' placeholder='请输入用户名' onBlur={getUserStatus} prefixIcon={<UserIcon />} />
             </FormItem>
             <FormItem
               name='password'
@@ -82,10 +145,20 @@ export default function Login() {
                 }
               />
             </FormItem>
-            <div className={classnames(Style.checkContainer, Style.rememberPwd)}>
-              <Checkbox>记住账号</Checkbox>
-              <span className={Style.checkContainerTip}>忘记账号？</span>
-            </div>
+            {showCaptcha && !disableLogin && (
+              <FormItem name='captchaAnswer'>
+                <Input prefixIcon={<SecuredIcon />} placeholder='请输入验证码' clearable />
+                <span onClick={doRefreshCaptcha}>
+                  <Image
+                    key={refreshCaptchaCount}
+                    src={captchaImg}
+                    style={{ width: '64px', height: '32px', background: '#eee' }}
+                    loading={<ImageErrorIcon style={{ width: '100%', height: '100%', background: '#999' }} />}
+                    error={<ImageErrorIcon style={{ width: '100%', height: '100%', background: '#999' }} />}
+                  />
+                </span>
+              </FormItem>
+            )}
           </>
         )}
 
@@ -120,10 +193,17 @@ export default function Login() {
             </FormItem>
           </>
         )}
-        {loginType !== 'qrcode' && (
+        {loginType !== 'qrcode' && !disableLogin && (
           <FormItem className={Style.btnContainer}>
             <Button block size='large' type='submit'>
               登录
+            </Button>
+          </FormItem>
+        )}
+        {loginType !== 'qrcode' && disableLogin && (
+          <FormItem className={Style.btnContainer}>
+            <Button block size='large' type='submit' theme='default' disabled>
+              账户已锁定, 请过会儿再试
             </Button>
           </FormItem>
         )}

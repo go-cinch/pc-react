@@ -26,7 +26,7 @@ import CommonStyle from '../../../styles/common.module.less';
 import { create, deleteByIds, find, refreshCaptcha, reset, selectSystemUser, update } from 'modules/system/user';
 import { find as findRole } from 'modules/system/role';
 import { find as findAction } from 'modules/system/action';
-import { BOOL, PAGE } from '../../../constants';
+import { PAGE } from '../../../constants';
 import Permission from 'components/Permission';
 
 const { FormItem } = Form;
