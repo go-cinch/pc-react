@@ -10,7 +10,7 @@ import { create, deleteByIds, find, reset, selectSystemUserGroup, update } from 
 import { find as findUser } from 'modules/system/user';
 import { find as findAction } from 'modules/system/action';
 import { PAGE } from '../../../constants';
-import { idempotent } from '../../../modules/global/idempotent';
+import { v4 as uuidv4 } from 'uuid';
 import Permission from 'components/Permission';
 
 const { FormItem } = Form;
@@ -131,11 +131,7 @@ export const SelectTable = () => {
 
   const fetchIdempotentData = async () => {
     try {
-      const res: any = await dispatch(idempotent());
-      if (res.error?.message) {
-        throw new Error(res.error?.message);
-      }
-      setIdempotentToken(res.payload.token);
+      setIdempotentToken(uuidv4());
     } catch (e: any) {
       MessagePlugin.error(e.message);
     }

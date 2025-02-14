@@ -2,7 +2,6 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 
 import global from './global';
-import globalIdempotent from './global/idempotent';
 import user from './user';
 import listBase from './list/base';
 import listSelect from './list/select';
@@ -15,7 +14,6 @@ import systemWhitelist from './system/whitelist';
 
 const reducer = combineReducers({
   global,
-  globalIdempotent,
   user,
   listBase,
   listSelect,

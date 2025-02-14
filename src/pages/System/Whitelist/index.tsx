@@ -7,7 +7,7 @@ import SearchForm from './components/SearchForm';
 import classnames from 'classnames';
 import CommonStyle from '../../../styles/common.module.less';
 import { create, deleteByIds, find, reset, selectSystemWhitelist, update } from 'modules/system/whitelist';
-import { idempotent } from '../../../modules/global/idempotent';
+import { v4 as uuidv4 } from 'uuid';
 import Permission from 'components/Permission';
 import { WHITELIST_OPTIONS } from '../../../constants';
 
@@ -67,11 +67,7 @@ export const SelectTable = () => {
 
   const fetchIdempotentData = async () => {
     try {
-      const res: any = await dispatch(idempotent());
-      if (res.error?.message) {
-        throw new Error(res.error?.message);
-      }
-      setIdempotentToken(res.payload.token);
+      setIdempotentToken(uuidv4());
     } catch (e: any) {
       MessagePlugin.error(e.message);
     }
