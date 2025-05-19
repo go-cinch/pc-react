@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import store from 'modules/store';
@@ -12,15 +12,11 @@ import './styles/index.less';
 const env = import.meta.env.MODE || 'development';
 const baseRouterName = env === 'site' ? '/starter/react/' : '';
 
-const renderApp = () => {
-  const container = document.getElementById('app');
-  if (!container) {
-    console.error('Root element not found');
-    return;
-  }
-  const root = createRoot(container);
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = document.getElementById('app')!;
 
-  root.render(
+const renderApp = () => {
+  ReactDOM.createRoot(root).render(
     <Provider store={store}>
       <BrowserRouter basename={baseRouterName}>
         <App />

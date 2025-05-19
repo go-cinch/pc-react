@@ -19,6 +19,7 @@ yarn-error.log*
 
 # lock
 yarn.lock
+pnpm-lock.yaml
 
 # code editor setting
 /.vscode
