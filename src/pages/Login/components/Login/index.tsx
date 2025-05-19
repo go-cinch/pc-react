@@ -24,7 +24,7 @@ const { FormItem } = Form;
 export type ELoginType = 'password' | 'phone' | 'qrcode';
 
 export default function Login() {
-  const [loginType, changeLoginType] = useState<ELoginType>('password');
+  const [loginType] = useState<ELoginType>('password');
   const [showPsw, toggleShowPsw] = useState(false);
   const [disableLogin, toggleDisableLogin] = useState(false);
   const [showCaptcha, toggleShowCaptcha] = useState(false);
@@ -56,7 +56,6 @@ export default function Login() {
       } catch (e: any) {
         MessagePlugin.error(e.message);
         await getUserStatus();
-      } finally {
       }
     }
   };
@@ -85,7 +84,8 @@ export default function Login() {
       } else {
         toggleDisableLogin(false);
       }
-    } finally {
+    } catch (e) {
+      // Handle error if needed
     }
   };
 
@@ -105,7 +105,7 @@ export default function Login() {
 
   // const switchType = (val: ELoginType) => {
   //   formRef.current?.reset?.();
-  //   changeLoginType(val);
+  //   setLoginType(val);
   // };
 
   return (
