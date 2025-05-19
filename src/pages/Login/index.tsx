@@ -9,12 +9,9 @@ import { selectGlobal } from 'modules/global';
 import Style from './index.module.less';
 
 export default memo(() => {
-  const [type, setType] = useState('login');
+  const [type] = useState('login');
   const globalState = useAppSelector(selectGlobal);
   const { theme } = globalState;
-  const handleSwitchLoginType = () => {
-    setType(type === 'register' ? 'login' : 'register');
-  };
 
   return (
     <div
