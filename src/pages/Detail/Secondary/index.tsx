@@ -28,10 +28,7 @@ const MsgList = memo((props: IMsgListProps) => {
     <List className={Style.msgList}>
       {list && list.length > 0 ? (
         list.map((item) => (
-          <ListItem
-            className={Style.listItem}
-            key={item.id}
-          >
+          <ListItem className={Style.listItem} key={item.id}>
             <div
               className={classnames(Style.content, {
                 [Style.unread]: item.status === 1,
