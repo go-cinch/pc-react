@@ -5,7 +5,7 @@ export default {
   },
   development: {
     // 开发环境接口请求
-    API: 'http://127.0.0.1:6061',
+    API: '',
   },
   test: {
     // 测试环境接口地址
@@ -13,7 +13,7 @@ export default {
   },
   release: {
     // 正式环境接口地址
-    API: 'https://app.go-cinch.top',
+    API: '',
   },
   site: {
     // TDesign部署特殊需要 与release功能一致
