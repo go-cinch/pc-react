@@ -7,18 +7,37 @@
     .listItem {
       cursor: pointer;
       padding: 13px 24px 13px 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
       &:hover {
         background-color: var(--td-bg-color-container-hover);
       }
+
       &:hover .createTime {
         display: none;
       }
+
+      .createTime {
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
       .action {
         display: none;
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        transform: translateY(-50%);
       }
+
       &:hover .action {
         display: block;
       }
+
       &:after {
         content: "";
         position: absolute;
@@ -29,6 +48,7 @@
         background: var(--td-border-level-1-color);
       }
     }
+
     .content {
       margin: 0;
       font-size: 14px;
@@ -38,15 +58,19 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      padding-right: 120px; /* Make room for the action buttons */
     }
+
     .tag {
       margin-right: 8px;
     }
+
     .noData {
       text-align: center;
       height: 28px;
       line-height: 28px;
     }
+
     .unread {
       color: var(--td-brand-color-8);
     }
