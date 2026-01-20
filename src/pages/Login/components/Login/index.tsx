@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, MessagePlugin, Input, Image, Button, FormInstanceFunctions, SubmitContext } from 'tdesign-react';
+import { Form, MessagePlugin, Input, Image, Button, FormInstanceFunctions, SubmitContext, QRCode } from 'tdesign-react';
 import {
   LockOnIcon,
   UserIcon,
@@ -11,7 +11,6 @@ import {
   ImageErrorIcon,
 } from 'tdesign-icons-react';
 import classnames from 'classnames';
-import QRCode from 'qrcode.react';
 import { useAppDispatch } from 'modules/store';
 import { login, status } from 'modules/user';
 import useCountdown from '../../hooks/useCountDown';

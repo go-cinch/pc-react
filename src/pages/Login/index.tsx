@@ -25,7 +25,7 @@ export default memo(() => {
         </div>
         {type === 'login' ? <Login /> : <Register />}
       </div>
-      <footer className={Style.copyright}>Copyright @ 2024 Go Cinch. All Rights Reserved</footer>
+      <footer className={Style.copyright}>Copyright @ 2024-{new Date().getFullYear()} Go Cinch. All Rights Reserved</footer>
     </div>
   );
 });
