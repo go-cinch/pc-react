@@ -336,6 +336,7 @@ export const SelectTable = () => {
       <Dialog
         header={editDialogType ? `编辑"${editDialogRow.word}"` : '新增'}
         visible={editDialogVisible}
+        destroyOnClose
         onClose={handleEditDialogClose}
         confirmBtn={
           <Button loading={editLoading} onClick={handleEditDialogConfirm}>
