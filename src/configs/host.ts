@@ -13,7 +13,7 @@ export default {
   },
   release: {
     // 正式环境接口地址
-    API: '',
+    API: 'https://app.go-cinch.top',
   },
   site: {
     // TDesign部署特殊需要 与release功能一致
