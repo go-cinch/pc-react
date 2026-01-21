@@ -196,7 +196,7 @@ export const SelectTable = () => {
       if (editDialogType) {
         const params: any = {};
         for (const key in fields) {
-          if (fields[key] !== '') {
+          if (fields[key] !== undefined && fields[key] !== null) {
             params[key] = fields[key];
           }
         }
