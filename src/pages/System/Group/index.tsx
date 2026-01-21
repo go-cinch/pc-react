@@ -148,6 +148,7 @@ export const SelectTable = () => {
   async function handleCreate() {
     editFormRef.current?.reset();
     await fetchIdempotentData();
+    setEditDialogRow({});
     setEditDialogType(false);
     setEditDialogVisible(true);
   }

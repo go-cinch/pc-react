@@ -180,6 +180,7 @@ export const SelectTable = () => {
   async function handleCreate() {
     await doRefreshCaptcha();
     editFormRef.current?.reset();
+    setEditDialogRow({});
     setEditDialogType(false);
     setEditDialogVisible(true);
   }
